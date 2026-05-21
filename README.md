@@ -3,7 +3,7 @@
 A complete and modern Job Portal system designed for Job Seekers and Recruiters. This project features dynamic job feeds, modern dashboards, and interactive filtering.
 
 ##  Key Features
- * Interactive Recruiter Dashboard:** Real-time metrics counters for active posted jobs, pending applications, and approved candidates.
+ * Interactive Recruiter Dashboard: Real-time metrics counters for active posted jobs, pending applications, and approved candidates.
  * Dynamic Job Feed: Showcases 50+ premium real-world jobs with accurate CTC/Salary listings in Indian Rupees (₹).
  * Advanced UI Filters: Responsive buttons to filter categories (Frontend, Backend, Design) seamlessly on the frontend.
  * Modern Dark Footer: Custom-designed dark theme featuring professional contact linkages.
