@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | JobHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #5da8f3; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+        
+        /* 🧭 Navbar Fix */
+        .navbar-custom {
+            background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 5%; width: 100%; box-sizing: border-box;
+        }
+        .navbar-custom .logo { font-size: 24px; font-weight: 700; color: #000000; text-decoration: none; }
+        .navbar-custom .logo span { color: #2563eb; }
+        .navbar-custom .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; align-items: center; }
+        .navbar-custom .nav-links a { text-decoration: none; color: #000000; font-weight: 500; font-size: 15px; }
+        .navbar-custom .nav-links a.active { color: #2563eb; font-weight: 600; }
+
+        .profile-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Profile Card with Edit Button */
+        .profile-card { 
+            background: #ffffff; padding: 30px; border-radius: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 30px; 
+            display: flex; align-items: center; justify-content: space-between; gap: 20px; 
+            border: 1px solid #000000;
+        }
+        .profile-left { display: flex; align-items: center; gap: 20px; }
+        .profile-avatar { width: 80px; height: 80px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; }
+        .profile-info h2 { font-size: 24px; color: #000000; margin: 0; }
+        .profile-info p { color: #64748b; font-size: 14px; margin: 5px 0 0 0; }
+        
+        .btn-edit-profile {
+            background: #df1313; color: #000000; border: none; padding: 10px 18px; 
+            border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-edit-profile:hover { background: #e2e8f0; color: #000000; }
+
+        /* Status Table Design */
+        .history-card { background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 2px solid #000000; }
+        .history-card h3 { margin-top: 0; margin-bottom: 20px; color: #0f172a; font-size: 18px; font-weight: 700; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px; border-bottom: 2px solid #000000; font-size: 14px; }
+        th { background: #f8fafc; color: #475569; font-weight: 600; }
+        
+        /* Badges for Status */
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; display: inline-block; text-transform: uppercase; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #dc2626; }
+
+        /* Edit Modal Stylings */
+        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; color: #0f172a; font-weight: 700; }
+        .close-btn { font-size: 24px; cursor: pointer; color: #000000; }
+        .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
+        .input-group label { font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #475569; }
+        .input-group input { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
+        .input-group input:focus { border-color: #2563eb; }
+        .btn-save { width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-save:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar-custom">
+        <a href="index.html" class="logo">Job<span>Hub</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="profile.html" class="active">My Profile</a></li>
+            <li><a href="index.html" onclick="localStorage.removeItem('username'); localStorage.removeItem('role');" style="color: #ef4444; font-weight: 600;">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-left">
+                <div class="profile-avatar" id="userInitial">U</div>
+                <div class="profile-info">
+                    <h2 id="profileName">Loading User...</h2>
+                    <p>💼 Job Seeker Account</p>
+                </div>
+            </div>
+            <button class="btn-edit-profile" id="editProfileBtn">✏️ Edit Profile</button>
+        </div>
+
+        <div class="history-card">
+            <h3>📊 Your Applied Jobs History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Job Role</th>
+                        <th>Applied Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="userAppliedJobsTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile Details</h3>
+                <span class="close-btn" id="closeEditModal">&times;</span>
+            </div>
+            <form id="editProfileForm">
+                <div class="input-group">
+                    <label>Change Full Name</label>
+                    <input type="text" id="newProfileName" required>
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentUserName = localStorage.getItem('username');
+
+            if (!currentUserName) {
+                alert("🛑 Please login first!");
+                window.location.href = "login.html";
+                return;
+            }
+
+            // 🌟 SMART ENGINE: Agar user "sinil" hai aur DB khali hai, toh data injector inject karega
+            let apps = JSON.parse(localStorage.getItem("applicationsDatabase")) || [];
+            
+            if (currentUserName.toLowerCase() === "sinil" && apps.length === 0) {
+                const sinilMockData = [
+                    { company: "Figma", role: "UI/UX Designer", date: "5/18/2026", status: "PENDING", username: "name" },
+                    { company: "Amazon", role: "Backend Engineer", date: "5/18/2026", status: "PENDING", username: "name" },
+                    { company: "Google Inc.", role: "Frontend Developer", date: "5/18/2026", status: "PENDING", username: "name" },
+                    { company: "Meta", role: "Full Stack Web Intern", date: "5/17/2026", status: "APPROVED", username: "name" },
+                    { company: "Amazon", role: "Backend Engineer", date: "5/17/2026", status: "APPROVED", username: "name" },
+                    { company: "Google Inc.", role: "Frontend Developer", date: "5/17/2026", status: "APPROVED", username: "name" },
+                    { company: "Google Inc.", role: "Frontend Developer", date: "5/17/2026", status: "REJECTED", username: "name" }
+                ];
+                localStorage.setItem("applicationsDatabase", JSON.stringify(sinilMockData));
+                apps = sinilMockData;
+            }
+
+            // 1. Render Profile Header Info
+            function renderProfileHeader() {
+                document.getElementById("profileName").innerText = currentUserName;
+                document.getElementById("userInitial").innerText = currentUserName.charAt(0).toUpperCase();
+            }
+            renderProfileHeader();
+
+            // 2. Render Applications Table History
+            function renderTable() {
+                const userTableBody = document.getElementById("userAppliedJobsTableBody");
+                if (!userTableBody) return;
+
+                const currentApps = JSON.parse(localStorage.getItem("applicationsDatabase")) || [];
+                
+                // Pure filtration fallback validation loop
+                const myApplications = currentApps.filter(app => {
+                    const applicant = app.user || app.username || app.applicantName || "";
+                    return applicant.toLowerCase() === currentUserName.toLowerCase();
+                });
+
+                userTableBody.innerHTML = "";
+
+                if (myApplications.length === 0) {
+                    userTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; font-weight:600; padding:30px;">Abhi tak aapne kisi job me apply nahi kiya hai bhai.</td></tr>`;
+                    return;
+                }
+
+                myApplications.forEach(app => {
+                    let badgeClass = "status-pending";
+                    const statusCheck = (app.status || "PENDING").toUpperCase();
+                    
+                    if (statusCheck === 'APPROVED') badgeClass = "status-approved";
+                    if (statusCheck === 'REJECTED') badgeClass = "status-rejected";
+
+                    userTableBody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:700; color:#0f172a;">${app.company || "Organization"}</td>
+                            <td style="color:#334155;">${app.role || "Developer"}</td>
+                            <td style="color:#64748b;">${app.date || "Just Now"}</td>
+                            <td><span class="status-badge ${badgeClass}">${statusCheck}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+            renderTable();
+
+            // 3. Edit Profile Modal Core Logic Window Elements Tracking
+            const editModal = document.getElementById("editModal");
+            const editBtn = document.getElementById("editProfileBtn");
+            const closeBtn = document.getElementById("closeEditModal");
+            const editForm = document.getElementById("editProfileForm");
+
+            editBtn.addEventListener("click", () => {
+                document.getElementById("newProfileName").value = currentUserName;
+                editModal.style.display = "flex";
+            });
+
+            closeBtn.addEventListener("click", () => {
+                editModal.style.display = "none";
+            });
+
+            window.addEventListener("click", (e) => {
+                if (e.target === editModal) {
+                    editModal.style.display = "none";
+                }
+            });
+
+            // 4. Form Submit & Realtime Storage Cross-Reference Synchronization
+            editForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const updatedName = document.getElementById("newProfileName").value.trim();
+                
+                if (updatedName) {
+                    const oldName = currentUserName;
+
+                    let globalApps = JSON.parse(localStorage.getItem("applicationsDatabase")) || [];
+                    globalApps.forEach(app => {
+                        const applicant = app.user || app.username || app.applicantName || "";
+                        if (applicant.toLowerCase() === oldName.toLowerCase()) {
+                            if (app.user) app.user = updatedName;
+                            if (app.username) app.username = updatedName;
+                            if (app.applicantName) app.applicantName = updatedName;
+                        }
+                    });
+                    localStorage.setItem("applicationsDatabase", JSON.stringify(globalApps));
+
+                    localStorage.setItem('username', updatedName);
+                    currentUserName = updatedName;
+
+                    renderProfileHeader();
+                    renderTable();
+                    
+                    alert("🎉 Profile Updated Successfully!");
+                    editModal.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

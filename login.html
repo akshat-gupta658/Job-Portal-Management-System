@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - JobHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #3d77f3 0%, #6788ad 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .auth-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logo { font-size: 28px; font-weight: 800; color: #000000; margin-bottom: 25px; }
+        .logo span { color: #2563eb; }
+        h2 { font-size: 20px; color: #000000; margin-bottom: 20px; font-weight: 600; }
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 2px solid #000000;
+            margin-bottom: 16px;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus { border-color: #2563eb; }
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn-auth:hover { background: #1d4ed8; }
+        p { font-size: 13px; color: #64748b; margin-top: 20px; }
+        p a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="logo">Job<span>Hub</span></div>
+        <h2>Welcome Back! Login Here</h2>
+        
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Enter your email" class="input-field" required>
+            <input type="password" id="loginPassword" placeholder="Enter password" class="input-field" required>
+            <button type="submit" class="btn-auth">Login</button>
+        </form>
+
+        <p>Don't have an account? <a href="register.html">Register</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const emailValue = document.getElementById('loginEmail').value.toLowerCase().trim();
+            const passwordValue = document.getElementById('loginPassword').value;
+
+            // 1. Memory array load karo
+            const usersDatabase = JSON.parse(localStorage.getItem('usersDatabase')) || [];
+
+            // 2. Scan engine check
+            let validUser = usersDatabase.find(u => u.email === emailValue && u.password === passwordValue);
+
+            // 3. Fallback tracking check (Old single key validation system)
+            if (!validUser) {
+                const backupEmail = localStorage.getItem('registeredEmail');
+                const backupPassword = localStorage.getItem('registeredPassword');
+                const backupName = localStorage.getItem('registeredName');
+
+                if (backupEmail && backupEmail.toLowerCase().trim() === emailValue && backupPassword === passwordValue) {
+                    validUser = {
+                        name: backupName || "Candidate",
+                        email: emailValue,
+                        password: passwordValue,
+                        role: 'seeker'
+                    };
+                }
+            }
+
+            // 4. Session allocation control block
+            if (validUser) {
+                localStorage.setItem('role', validUser.role || 'seeker');
+                localStorage.setItem('username', validUser.name);
+
+                alert('🎉 Login Successful! Welcome back ' + validUser.name);
+                
+                // Redirection control routing
+                if (validUser.role === 'recruiter') {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+
+            } else {
+                alert("❌ Invalid email or password! Please register first if you don't have an account.");
+            }
+        });
+    </script>
+</body>
+</html>

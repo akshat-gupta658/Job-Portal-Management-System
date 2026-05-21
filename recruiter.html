@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications Queue | Recruiter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #a4c9ec; color: #0f172a; }
+
+        /* 🧭 NAVBAR */
+        header { background: #53d4eb; width: 100%; border-bottom: 3px solid #000000; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: 800; color: #0f172a; text-decoration: none; }
+        .logo span { color: #10b981; }
+        .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; }
+        .nav-links a { text-decoration: none; font-weight: 600; font-size: 14px; color: #000000; }
+        .btn-logout { color: #ef4444 !important; cursor: pointer; font-weight: 600; }
+
+        /* 📊 MAIN CONTAINER */
+        .dashboard-container { max-width: 1140px; margin: 40px auto; padding: 0 20px; }
+
+        /* 📋 TABLES & PANEL BOXES */
+        .panel-box { background: #aab7b8; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); border: 3px solid #000000; margin-bottom: 40px; }
+        .panel-box h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: #000000; }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; background: #fff; }
+        th { background: #9dffaa; color: #000; font-weight: 700; padding: 14px; border-bottom: 3px solid #000000; border-right: 1px solid #000; }
+        td { padding: 14px; border-bottom: 2px solid #000000; color: #334155; border-right: 1px solid #cbd5e1; }
+
+        /* 🏷️ STATUS BADGES */
+        .status-badge { padding: 4px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; text-transform: uppercase; display: inline-block; }
+        .status-pending { background: #fef3c7; color: #d97706; border: 1px solid #d97706; }
+        .status-approved { background: #d1fae5; color: #059669; border: 1px solid #059669; }
+        .status-rejected { background: #fee2e2; color: #dc2626; border: 1px solid #dc2626; }
+
+        /* Buttons styling */
+        .btn-action-approve { padding: 6px 12px; background: #10b981; color: white; border: 1px solid #000; font-weight: 600; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 4px; }
+        .btn-action-approve:hover { background: #059669; }
+        .btn-action-reject { padding: 6px 12px; background: #ef4444; color: white; border: 1px solid #000; font-weight: 600; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .btn-action-reject:hover { background: #b91c1c; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Job<span>Recruiter Portal</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">View Site Home</a></li>
+                <li><a href="dashboard.html">Manage Jobs</a></li>
+                <li><a href="recruiter.html" style="color: #10b981;">Applications Queue</a></li>
+                <li><a id="recruiterLogoutBtn" class="btn-logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="panel-box">
+            <h2>📥 Incoming Job Applications Queue</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Applicant Name</th>
+                            <th>Applicant Email</th>
+                            <th>Contact Number</th>
+                            <th>Applied Company</th>
+                            <th>Target Role</th>
+                            <th>Resume File</th>
+                            <th>Current Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicationsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="jobs-data.js"></script>
+    <script src="recruiter-apps.js"></script>
+</body>
+</html>
